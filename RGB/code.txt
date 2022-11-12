@@ -1,0 +1,120 @@
+/*omar Elboray JG5F65 */
+#include<IRremote.h>
+int irreceiver = 2;
+int red = 13;
+int blue = 12;
+int green = 11;
+IRrecv irrecv(irreceiver);
+decode_results results;
+void setup()
+{
+pinMode(red,OUTPUT);
+pinMode(green,OUTPUT);
+pinMode(blue,OUTPUT);
+Serial.begin(9600);
+Serial.println("Pin_Enabling");
+irrecv.enableIRIn();
+Serial.println("Pin_Enabled");
+}
+void loop()
+{
+if(irrecv.decode(&results))
+{
+int value = results.value;
+Serial.println(value);
+if(value == 12495)//no color is visible
+{
+digitalWrite(red,LOW);
+digitalWrite(green,LOW);
+digitalWrite(blue,LOW);
+}
+if(value == 2295)//red color is visible
+{
+digitalWrite(red,HIGH);
+digitalWrite(green,LOW);
+digitalWrite(blue,LOW);
+}
+if(value == -30601)//green color is visible
+{
+digitalWrite(red,LOW);
+digitalWrite(green,HIGH);
+digitalWrite(blue,LOW);
+}
+if(value == 18615)//blue color is visible
+{
+digitalWrite(red,LOW);
+digitalWrite(green,LOW);
+digitalWrite(blue,HIGH);
+}
+if(value == 10455)//both red and green are mixed in visualisation
+{
+digitalWrite(red,HIGH);
+digitalWrite(green,HIGH);
+digitalWrite(blue,LOW);
+}
+if(value == -22441)//both red and blue are mixed in visualisation
+{
+digitalWrite(red,HIGH);
+digitalWrite(green,LOW);
+digitalWrite(blue,HIGH);
+}
+if(value == 26775)//both blue and green are mixed in visualisation
+{
+digitalWrite(red,LOW);
+digitalWrite(green,HIGH);
+digitalWrite(blue,HIGH);
+}
+if(value == 6375)//all colors are mixed in visualisation
+{
+digitalWrite(red,HIGH);
+digitalWrite(blue,HIGH);
+digitalWrite(green,HIGH);
+}
+while(value == -26521)//blinking red,green and blue color lights visible by delayed 2 sec
+{
+digitalWrite(red,HIGH);
+digitalWrite(green,LOW);
+digitalWrite(blue,LOW);
+delay(2000);
+digitalWrite(red,LOW);
+digitalWrite(green,HIGH);
+digitalWrite(blue,LOW);
+delay(2000);
+digitalWrite(red,LOW);
+digitalWrite(green,LOW);
+digitalWrite(blue,HIGH);
+delay(2000);
+}
+while(value == 22695)//all types of colors are visible by delayed 2sec
+{
+digitalWrite(red,HIGH);
+digitalWrite(green,LOW);
+digitalWrite(blue,LOW);
+delay(2000);
+digitalWrite(red,LOW);
+digitalWrite(green,HIGH);
+digitalWrite(blue,LOW);
+delay(2000);
+digitalWrite(red,LOW);
+digitalWrite(green,LOW);
+digitalWrite(blue,HIGH);
+delay(2000);
+digitalWrite(red,HIGH);
+digitalWrite(green,HIGH);
+digitalWrite(blue,LOW);
+delay(2000);
+digitalWrite(red,HIGH);
+digitalWrite(green,LOW);
+digitalWrite(blue,HIGH);
+delay(2000);
+digitalWrite(red,LOW);
+digitalWrite(green,HIGH);
+digitalWrite(blue,HIGH);
+delay(2000);
+digitalWrite(red,HIGH);
+digitalWrite(green,HIGH);
+digitalWrite(blue,HIGH);
+}
+irrecv.resume();
+}
+}
